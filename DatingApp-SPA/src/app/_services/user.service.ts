@@ -100,4 +100,8 @@ constructor(private http: HttpClient) { }
   getMessageThread(id: number, recipientId: number) {
     return this.http.get<Message[]>(this.baseUrl + 'users/' + id + '/messages/thread/' + recipientId);
   }
+
+  sendMesage(id: number, message: Message) {
+    return this.http.post(this.baseUrl + 'users/' + id + '/messages', message);
+  }
 }
