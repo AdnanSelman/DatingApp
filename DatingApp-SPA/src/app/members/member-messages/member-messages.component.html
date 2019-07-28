@@ -7,7 +7,7 @@
     <ul class="chat">
       <li *ngFor="let message of messages">
         <!-- to them -->
-        <div *ngIf="message.senderId == recipientId"></div>
+        <div *ngIf="message.senderId == recipientId">
         <span class="chat-img float-left">
           <img src="{{message.senderPhotoUrl}}" alt="{{message.senderKnownAs}}" class="rounded-circle">
         </span>
@@ -20,9 +20,9 @@
           </div>
           <p>{{message.content}}</p>
         </div>
-
+      </div>
         <!-- to me -->
-        <div *ngIf="message.senderId != recipientId"></div>
+        <div *ngIf="message.senderId != recipientId">
         <span class="chat-img float-right">
           <img src="{{message.senderPhotoUrl}}" alt="{{message.senderKnownAs}}" class="rounded-circle">
         </span>
@@ -37,9 +37,9 @@
           </div>
           <p>{{message.content}}</p>
         </div>
+      </div>
       </li>
     </ul>
-
   </div>
   <div class="card-footer">
     <form #messageForm="ngForm" (ngSubmit)="messageForm.valid && sendMessage()">
