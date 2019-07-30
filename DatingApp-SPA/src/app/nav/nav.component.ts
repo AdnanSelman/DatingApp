@@ -13,7 +13,7 @@ export class NavComponent implements OnInit {
   photoUrl: string;
 
   constructor(public authService: AuthService, private alertify: AlertifyService,
-    private router: Router) { }
+      private router: Router) { }
 
   ngOnInit() {
     this.authService.currentPhotoUrl.subscribe(photoUrl => this.photoUrl = photoUrl);
@@ -30,7 +30,8 @@ export class NavComponent implements OnInit {
   }
 
   loggedIn() {
-    return this.authService.loggedIn();
+    const token = localStorage.getItem('token');
+    return !!token;
   }
 
   logout() {

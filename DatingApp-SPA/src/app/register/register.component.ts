@@ -17,13 +17,13 @@ export class RegisterComponent implements OnInit {
   registerForm: FormGroup;
   bsConfig: Partial<BsDatepickerConfig>;
 
-  constructor(private authService: AuthService, private alertify: AlertifyService,
-    private router: Router, private fb: FormBuilder) { }
+  constructor(private authService: AuthService, private router: Router,
+    private alertify: AlertifyService, private fb: FormBuilder) { }
 
   ngOnInit() {
     this.bsConfig = {
       containerClass: 'theme-red'
-    },
+    };
     this.createRegisterForm();
   }
 
@@ -57,12 +57,6 @@ export class RegisterComponent implements OnInit {
         });
       });
     }
-   /* this.authService.register(this.model).subscribe(() => {
-      this.alertify.success('registration successful');
-    }, error => {
-      this.alertify.error(error);
-    });*/
-    console.log(this.registerForm.value);
   }
 
   cancel() {

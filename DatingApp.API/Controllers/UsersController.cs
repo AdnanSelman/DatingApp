@@ -19,12 +19,12 @@ namespace DatingApp.API.Controllers
     public class UsersController : ControllerBase
     {
         private readonly IDatingRepository _repo;
-        private readonly IMapper _maper;
-        public UsersController(IDatingRepository repo, IMapper maper)
-        {
-            _maper = maper;
-            _repo = repo;
+        private readonly IMapper _mapper;
 
+        public UsersController(IDatingRepository repo, IMapper mapper)
+        {
+            _mapper = mapper;
+            _repo = repo;
         }
 
         [HttpGet]
@@ -43,12 +43,12 @@ namespace DatingApp.API.Controllers
 
             var users = await _repo.GetUsers(userParams);
 
-            var usersForReturn = _maper.Map<IEnumerable<UserForListDto>>(users);
+            var usersToReturn = _mapper.Map<IEnumerable<UserForListDto>>(users);
 
             Response.AddPagination(users.CurrentPage, users.PageSize,
-                 users.TotalCount, users.TotalPages);
-            
-            return Ok(usersForReturn);
+                users.TotalCount, users.TotalPages);
+
+            return Ok(usersToReturn);
         }
 
         [HttpGet("{id}", Name = "GetUser")]
@@ -56,13 +56,12 @@ namespace DatingApp.API.Controllers
         {
             var user = await _repo.GetUser(id);
 
-            var userForReturn = _maper.Map<UserForDetailedDto>(user);
+            var userToReturn = _mapper.Map<UserForDetailedDto>(user);
 
-            return Ok(userForReturn);
+            return Ok(userToReturn);
         }
 
         [HttpPut("{id}")]
-
         public async Task<IActionResult> UpdateUser(int id, UserForUpdateDto userForUpdateDto)
         {
             if (id != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
@@ -70,7 +69,7 @@ namespace DatingApp.API.Controllers
 
             var userFromRepo = await _repo.GetUser(id);
 
-            _maper.Map(userForUpdateDto, userFromRepo);
+            _mapper.Map(userForUpdateDto, userFromRepo);
 
             if (await _repo.SaveAll())
                 return NoContent();
@@ -88,7 +87,7 @@ namespace DatingApp.API.Controllers
 
             if (like != null)
                 return BadRequest("You already like this user");
-
+            
             if (await _repo.GetUser(recipientId) == null)
                 return NotFound();
 
@@ -102,9 +101,8 @@ namespace DatingApp.API.Controllers
 
             if (await _repo.SaveAll())
                 return Ok();
-
+            
             return BadRequest("Failed to like user");
         }
-
     }
 }
